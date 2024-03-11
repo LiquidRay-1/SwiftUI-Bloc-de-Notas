@@ -31,7 +31,7 @@ final class NotasViewModel: ObservableObject {
     
     func getAllNotes() -> [NotasModel] {
         if let notasData = userDefaults.object(forKey: "notes") as? Data {
-            if let notas = try? JSONDecoder().decode([NotasModel].self, from: notasData){
+            if let notes = try? JSONDecoder().decode([NotasModel].self, from: notasData){
                 return notes
             }
         }
@@ -43,5 +43,15 @@ final class NotasViewModel: ObservableObject {
         if let encoded = try? JSONEncoder().encode(notes){
             userDefaults.set(encoded, forKey: "notes")
         }
+    }
+    
+    func removeNote(withID id: String){
+        notes.removeAll(where: {$0.id == id})
+        encodeAndSaveNotes()
+    }
+    
+    func updateFavoriteNote(note: Binding<NotasModel>){
+        note.wrappedValue.isFavorite = !note.wrappedValue.isFavorite
+        encodeAndSaveNotes()
     }
 }

@@ -45,13 +45,20 @@ final class NotasViewModel: ObservableObject {
         }
     }
     
+    //Eliminar una nota
     func removeNote(withID id: String){
         notes.removeAll(where: {$0.id == id})
         encodeAndSaveNotes()
     }
     
+    //Marcar/Desmarcar nota como favorita
     func updateFavoriteNote(note: Binding<NotasModel>){
         note.wrappedValue.isFavorite = !note.wrappedValue.isFavorite
         encodeAndSaveNotes()
+    }
+    
+    //Devuelve el número de notas
+    func numberNotes() -> String {
+        "\(notes.count)"
     }
 }

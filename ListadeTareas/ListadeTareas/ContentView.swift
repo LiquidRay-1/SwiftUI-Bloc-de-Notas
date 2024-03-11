@@ -32,6 +32,7 @@ struct ContentView: View {
                 }
                 .buttonStyle(.bordered)
                 .tint(.blue)
+                .disabled(descriptionNote.isEmpty)
                 Spacer()
                 List{
                     ForEach($notasViewModel.notes, id: \.id) { $nota in
@@ -48,12 +49,24 @@ struct ContentView: View {
                             } label: {
                                 Label("Favorito", systemImage: "star.fill")
                             }
+                            .tint(.blue)
+                        }
+                        .swipeActions(edge: .trailing){
+                            Button(){
+                                notasViewModel.removeNote(withID: nota.id)
+                            } label: {
+                                Label("Eliminar", systemImage: "trash.fill")
+                            }
+                            .tint(.red)
                         }
                     }
                 }
             }
             .navigationTitle("Notas")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar{
+                Text(notasViewModel.numberNotes())
+            }
         }
     }
 }
